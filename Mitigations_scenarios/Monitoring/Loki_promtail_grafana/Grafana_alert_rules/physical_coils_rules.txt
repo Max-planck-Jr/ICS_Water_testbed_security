@@ -1,0 +1,76 @@
+1. Name : Coil Flip Patterns Not Matching Process Logic (Security Rule)
+    Rule : count_over_time({container_name="MTU"} |= "coil data X*" |= "[False]"[1m]) > 15
+    Alert : Multiple Coils Turned Off Abruptly — Emergency Shutdown or Malicious Intervention
+
+
+2. Name : Repeated Deactivation of Coil W0 (mv 201 blocking valve to stop water) 
+    Rule : count_over_time({container_name="MTU"} |= "coil data W0: [False]"[1m]) > 5
+    Alert : W0 Repeatedly Disabled — Verify PLC Logic or Security Breach
+
+
+3. Name : Repeated Deactivation of Coil X7 (mv 302 blocking valve to stop water from flowing) 
+    Rule : count_over_time({container_name="MTU"} |= "coil data X7: [False]"[1m]) > 5
+    Alert : X7 Repeatedly Disabled — Verify PLC Logic or Security Breach 
+
+
+4. Name : Sudden Coil Deactivation During Operation for P 101
+    Rule : count_over_time({container_name="MTU"} |= "coil data X0: [False]" |= "P-101: Active"[1m]) > 1
+    Alert : X0 Turned Off While P-101 Running — Potential Denial Condition attack
+
+
+5. Name : Sudden Coil Deactivation During Operation for P 102
+    Rule : count_over_time({container_name="MTU"} |= "coil data X1: [False]" |= "P-102: Active"[1m]) > 1
+    Alert : X1 Turned Off While P-101 Running — Potential Denial Condition attack
+
+
+6. Name : All Coils Flipping to TRUE Rapidly (Flooding or Attack)
+    Rule : count_over_time({container_name="MTU"} |= "coil data X" |= "[True]"[1m]) > 12
+    Alert : Mass Coil Activation Detected — Check for Command Injection
+
+
+7. Name : Frequent Flip of Coil X0 to False (Suspicious Idle)
+    Rule : count_over_time({container_name="MTU"} |= "coil data X0: [False]"[1m]) > 5
+    Alert : X0 Coil Frequently Flipping to False — Possible Fault or Manual Override on Pump P-101
+
+
+8. Name : Frequent Flip of Coil X1 to False (Suspicious Idle)
+    Rule : count_over_time({container_name="MTU"} |= "coil data X1: [False]"[1m]) > 5
+    Alert : X1 Coil Frequently Flipping to False — Possible Fault or Manual Override on Pump P-102
+
+
+9. Name : Reservoir T-603 Overflow
+    Rule : count_over_time({container_name="MTU"} |= "T-603 full"[1m]) > 10
+    Alert : Reservoir T-603 Overflow Risk
+
+
+10. Name : Reservoir T-101 Overflow
+    Rule : count_over_time({container_name="MTU"} |= "T-101 full"[1m]) > 10
+    Alert : Reservoir T-101 Overflow Risk
+
+11. Name : MV-201 Stuck Inactive
+    Rule : count_over_time({container_name="MTU"} |= "MV-201: Inactive"[5m]) > 4
+    Alert : MV-201 Repeated Inactivity
+
+
+12. Name : Activity at Odd Hours (Off-Schedule Command Execution)
+    Rule : count_over_time({container_name="MTU"} |= "coil data X*" |= "[True]"[1h] offset 1d) > 15
+    Alert : Unusual Coil Triggering Outside of Operating Hours (Assumes your system should be mostly idle overnight. )
+
+
+13. Name : Frequent Alternating Coil States (e.g., X1 going TRUE/FALSE rapidly)
+    Rule : rate({container_name="MTU"} |= "coil data X1"[5m]) > 0.5
+    Alert : pump 102 Rapid State Fluctuation — Potential Injection or Faulty Logic
+
+
+14. Name : Frequent Alternating Coil States (e.g., X0 going TRUE/FALSE rapidly)
+    Rule : rate({container_name="MTU"} |= "coil data X0"[5m]) > 0.5
+    Alert : pump 101 Rapid State Fluctuation — Potential Injection or Faulty Logic
+
+
+
+
+
+
+
+
+
